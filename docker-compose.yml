@@ -24,11 +24,11 @@ services:
 
     # You can also add database connection info in the environment section
     environment:
-      DB_USER: remote
-      DB_PASSWORD: Qwerty254!
-      DB_HOST: 173.249.20.229
-      DB_PORT: 3306
-      DB_NAME: schoolsystem
+      DB_USER: USERNAME
+      DB_PASSWORD: YOUR_PASSWORD
+      DB_HOST: YOU_HOST
+      DB_PORT: YOU_PORT
+      DB_NAME: YOUR_DBNAME
 
 # If you have a web server like Nginx to serve your PHP app (optional but common for production)
   web-server:
