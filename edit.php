@@ -5,7 +5,7 @@ include('dbconnection.php');
 if (isset($_POST['submit'])) {
     // Process form submission
     // Update database with form data
-   $fname = $_POST['fname'];
+        $fname = $_POST['fname'];
         $mname = $_POST['mname'];
         $lname = $_POST['lname'];
         $gender = $_POST['gender'];
