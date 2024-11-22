@@ -1,0 +1,43 @@
+version: "3.9"
+services:
+  schoolsystem-php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: schoolsystem-php
+    volumes:
+      # Mount the project source code directory from the host machine into the container
+      - ./school:/var/www/html
+      
+      # Mount the .env file for configuration into the container
+      - ./configs/.env:/var/www/html/.env
+      
+      # Mount the logs directory so that logs are persistent and can be accessed from the host
+      - ./logs:/var/www/html/logs
+      
+    ports:
+      - "9000:9000"
+    
+    # Environment variables from the .env file
+    env_file:
+      - ./configs/.env
+
+    # You can also add database connection info in the environment section
+    environment:
+      DB_USER: remote
+      DB_PASSWORD: Qwerty254!
+      DB_HOST: 173.249.20.229
+      DB_PORT: 3306
+      DB_NAME: schoolsystem
+
+# If you have a web server like Nginx to serve your PHP app (optional but common for production)
+  web-server:
+    image: nginx:alpine
+    container_name: schoolsystem-nginx
+    volumes:
+      - ./school:/var/www/html
+      - ./configs/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    depends_on:
+      - schoolsystem-php
