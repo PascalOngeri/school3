@@ -1,0 +1,132 @@
+{{ define "sidebar" }}
+
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+          <ul class="nav">
+             <li class="nav-item nav-profile">
+              <a href="#" class="nav-link">
+                <div class="profile-image">
+                  
+                   
+                  
+               
+                  <div class="dot-indicator bg-success"></div>
+                   <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                <div class="dropdown-header d-flex">
+                  <img class="img-md rounded-circle" src="assets/images/faces/face8.jpg" width="60px" alt="Profile image">
+                  <div><p class="mb-1 mt-3">simon</p>
+                  <p class="font-weight-light text-muted mb-0">s@gmail.com</p> </div>
+                  
+                </div>
+                <a class="dropdown-item" href="profile.html"><i class="dropdown-item-icon icon-user text-primary"></i> My Profile</a>
+                <a class="dropdown-item" href="change-password.html"><i class="dropdown-item-icon icon-energy text-primary"></i> Change Password</a>
+                <a class="dropdown-item" href="logout.html"><i class="dropdown-item-icon icon-power text-primary"></i>Sign Out</a>
+              </div>
+                </div>
+                <div class="text-wrapper"> 
+                  
+                
+            
+            <li class="nav-item">
+              <a class="nav-link" href="/dashboard">
+              <i class="icon-home menu-icon"></i>
+                <span class="menu-title">Dashboard</span>
+
+              </a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                <i class="icon-layers menu-icon"></i>
+                <span class="menu-title">Class</span>
+              </a>
+              <div class="collapse" id="ui-basic">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="/addclass">Add Class</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="/manage">Manage Class</a></li>
+
+                </ul>
+              </div>
+            </li>
+
+             <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                <i class="icon-layers menu-icon"></i>
+                <span class="menu-title">Manage Fee</span>
+              </a>
+              <div class="collapse" id="ui-basic">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="/payfee">Pay Fee</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="/setfee">Set Fee</a></li>
+                   <li class="nav-item"> <a class="nav-link" href="/edelete">Update Fee</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="/optionalpay">Optional payments</a></li>
+                   
+                   
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#ui-basic1" aria-expanded="false" aria-controls="ui-basic1">
+                <i class="icon-people menu-icon"></i>
+                <span class="menu-title">Students</span>
+              </a>
+              <div class="collapse" id="ui-basic1">
+                <ul class="nav flex-column sub-menu">
+	
+                  <li class="nav-item"> <a class="nav-link" href="/addstudent">Add Students</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="/managestudent">Manage Students</a></li>
+                </ul>
+              </div>
+            </li>
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="collapse" href="#auth1" aria-expanded="false" aria-controls="auth">
+                <i class="icon-doc menu-icon"></i>
+                <span class="menu-title">Public Notice</span>
+              </a>
+              <div class="collapse" id="auth1">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"> <a class="nav-link" href="/addpubnot"> Add Public Notice </a></li>
+                  <li class="nav-item"> <a class="nav-link" href="/managepubnot"> Manage Public Notice </a></li>
+                </ul>
+              </div>
+            
+              
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="/search">
+                <i class="icon-magnifier menu-icon"></i>
+                <span class="menu-title">Search</span>
+              </a>
+            </li> -->
+             <li class="nav-item">
+              <a class="nav-link" href="/send">
+                <i class="icon-magnifier menu-icon"></i>
+                <span class="menu-title">Messages</span>
+              </a>
+            </li>
+             <li class="nav-item">
+              <a class="nav-link" href="/setting">
+                <i class="icon-magnifier menu-icon"></i>
+                <span class="menu-title">Settings</span>
+              </a>
+            </li>
+             <li class="nav-item">
+              <a class="nav-link" href="/adduser">
+                <i class="icon-magnifier menu-icon"></i>
+                <span class="menu-title">Manage Users</span>
+              </a>
+            </li>
+          
+
+             <li class="nav-item">
+              <a class="nav-link" target="a_blank" href="/logs">
+                <i class="icon-info menu-icon"></i>
+                <span class="menu-title">User logs</span>
+              </a>
+            </li>
+
+             
+            </li>
+          </ul>
+        </nav>
+        {{ end }}

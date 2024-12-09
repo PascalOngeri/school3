@@ -1,0 +1,124 @@
+
+{{ template "header" . }}
+<div class="container-fluid page-body-wrapper">
+             
+            
+{{ template "sidebar" . }}
+          <div class="main-panel">
+            <div class="content-wrapper">
+              <div class="page-header">
+                <h3 class="page-title"> Pay fee</h3>
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"> Pay fee</li>
+                  </ol>
+                </nav>
+              </div>
+              <div class="row">
+            
+                <div class="col-12 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                     
+                      <form class="forms-sample" method="post" action="/payfee">
+                        
+                        <div class="form-group">
+                          <label for="exampleInputName1">Admission Number</label>
+                          <input type="text" name="adm" value="" class="form-control" >
+                        </div>
+                          <div class="form-group">
+                          <label for="exampleInputName1">Amount </label>
+                          <input type="number" step="0.01" name="ammount" value="0.00" class="form-control" >
+                        </div>
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-primary mr-2" name="payfee">Pay cash</button>
+                      </div>        
+                      </form>
+                      <form>
+                         
+                      </form>
+  
+                    </div>
+                  </div>
+                </div>
+              </div>
+               <div class="row">
+            
+                <div class="col-12 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                     
+                      <form  method="POST" action="payphp.php" >
+                        
+                       
+                         <center><h1 style="text-decoration: line-below; color: black">Generate Fee structure</h1></center>  
+                      
+       
+              
+            
+              <div class="col-lg-4">
+              <select class="form-control" name="genclass"  >
+          <option VALUE=""> SELECT CLASS </option>
+          
+          
+          
+         </select>
+              </div>  
+              <div class="form-group">
+     
+              <button class="btn btn-primary" name="generatefee" > GENERATE FEE STRUCTURE</button>
+          <br>
+          <br>
+                      <center>  <h3 style="text-decoration: line-below; color: black">Recently paid fee</h3></center>
+  
+                         </form>
+                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                          <thead>
+                                              <tr>
+                                                  <th>SNo</th>
+                                                  <th>RegNo</th>
+                                                  <th>Date</th>
+                                                  <th>Amount Received</th>
+                                                  <th>Balance</th>
+                                                 
+                                                  <th>Action</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                             
+                                              <tr class="odd gradeX">
+                                                  <td></td>
+                                                  <td></td>
+                                                  <td></td>
+                                                  <td></td>
+                                                  <td></td>
+                                                 
+                                                  <td width="100">
+                                                     
+                                                      &nbsp;&nbsp;
+                                                      <a href="payfee.php?del=" class="btn btn-danger btn-xs" onclick="return confirm('Do you really want to delete?');">Delete</a>
+                                                  </td>
+                                              </tr>
+                                              <?php 
+                                                  $sn++;
+                                             } 
+  
+                                         
+  
+                                              ?>    
+                                          </tbody>
+                                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+           
+
+            {{ template "scripts" . }}
+          </div>
+          <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+      </div>

@@ -1,0 +1,140 @@
+
+{{ template "header" . }}
+<div class="container-fluid page-body-wrapper">
+             
+            
+{{ template "sidebar" . }}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+      <div class="page-header">
+        <h3 class="page-title"> Set fee </h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> Set fee</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="row">
+    
+        <div class="col-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+             <center> <label for="exampleInputEmail3">Compulsory payment</label></center> 
+             <form class="forms-sample" method="post" action="/setfee">
+               
+                
+               
+                <div class="form-group">
+                  <label for="exampleInputEmail3">Select class/grade</label>
+                  <select  name="class" class="form-control" required='true'>
+                    <option value="fom 2">Select Class</option>
+                    
+                    {{range .Classes}}
+                        <option value="{{.Name}}">{{.Name}}</option>
+                    {{end}}
+                    
+                  </select>
+                  </select>
+                </div>
+                <p>{{.Message}}</p>
+                 <div class="form-group">
+                  <label for="exampleInputName1">Payment Name</label>
+                  <input type="text" name="payname" placeholder="abcd...." class="form-control" >
+                </div>
+                <div class="form-group">
+                 <label for="exampleInputName1">Term 1</label>
+                  <input type="text" name="term1" value="0" class="form-control" >
+                </div>
+                <div class="form-group">
+                 <label for="exampleInputName1">Term 2</label>
+                  <input type="text" name="term2" value="0" class="form-control" >
+                </div>
+                <div class="form-group">
+                 <label for="exampleInputName1">Term 3</label>
+                  <input type="text" name="term3" value="0" class="form-control" >
+                </div>
+                
+                <button type="submit" class="btn btn-primary mr-2" name="submit">Save</button>
+                
+               <br>
+               <br>
+                  <br>
+               <br>
+              </form>
+
+<center><label for="exampleInputEmail3">OTHER PAYMENTS (optional)</label></center>
+
+               <form class="forms-sample" method="post" action="/otherpayinsert">
+               
+              
+                 <div class="form-group ">
+                  <label for="exampleInputName1">Payment Name</label>
+                  <input type="text" name="payname" value="" class="form-control" >
+                </div>
+                <div class="form-group">
+                 <label for="exampleInputName1">Term 1</label>
+                  <input type="text" name="term1" value="0" class="form-control" >
+                </div>
+                <div class="form-group">
+                 <label for="exampleInputName1">Term 2</label>
+                  <input type="text" name="term2" value="0" class="form-control" >
+                </div>
+                <div class="form-group">
+                 <label for="exampleInputName1">Term 3</label>
+                  <input type="text" name="term3" value="0" class="form-control" >
+                </div>
+                
+                <button type="submit" class="btn btn-primary mr-2" name="other">Save</button>
+               
+               <br><br>
+              </form>
+
+
+
+
+              <center><label for="exampleInputEmail3">Transportation fee(optional)</label></center>
+
+               <form class="forms-sample" method="POST" action="/transport">
+                
+               
+              
+                 
+               
+                
+                <br>
+
+                <div class="form-group ">
+                  <label for="exampleInputName1">Add Area</label>
+                  <input type="text" name="payname" value="" class="form-control" >
+                </div>
+                <div class="form-group">
+                 <label for="exampleInputName1">Term 1</label>
+                  <input type="number" name="term1" value="0" class="form-control" >
+                </div>
+                <div class="form-group">
+                 <label for="exampleInputName1">Term 2</label>
+                  <input type="number" name="term2" value="0" class="form-control" >
+                </div>
+                <div class="form-group">
+                 <label for="exampleInputName1">Term 3</label>
+                  <input type="number" name="term3" value="0" class="form-control" >
+                </div>
+                
+                <button type="submit" class="btn btn-primary mr-2" name="bus">Save</button>
+                
+               
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    {{ template "scripts" . }}
+  </div>
+  <!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+</div> 

@@ -1,0 +1,98 @@
+{{ template "header" . }}
+<div class="container-fluid page-body-wrapper">
+             
+            
+{{ template "sidebar" . }}
+
+
+<div class="main-panel">
+    <div class="content-wrapper">
+      <div class="page-header">
+          <h3 class="page-title">Manage Students</h3>
+          <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Manage Students</li>
+              </ol>
+          </nav>
+      </div>
+      <div class="row">
+          <div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                  <div class="card-body">
+                      <div class="d-sm-flex align-items-center mb-4">
+                          <h4 class="card-title mb-sm-0">Manage Students</h4>
+                          <a href="#" class="text-dark ml-auto mb-3 mb-sm-0">View all Students</a>
+                      </div>
+                      <div class="table-responsive border rounded p-1">
+                          <table class="table">
+                              <thead>
+                                  <tr>
+                                      
+                                      <th class="font-weight-bold">Admission no.</th>
+                                      <th class="font-weight-bold">Student Name</th>
+                                      <th class="font-weight-bold">Class/Grade/Form</th>
+                                      <th class="font-weight-bold">Fee Balance</th>
+                                      <th class="font-weight-bold">Parent Phone</th>
+                                      <th class="font-weight-bold">Action</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                {{range .}}
+                                <tr>
+                                    <td>{{.Adm}}</td>
+                                    <td>{{.Fname}} {{.Mname}} {{.Lname}}</td>
+                                    <td>{{.Class}}</td>
+                                    <td>{{.Fee}}</td>
+                                    <td>{{.Phone}}</td>
+                                    <td>
+                                          <a href="/updatestudent?id={{.Adm}}" class="btn btn-primary btn-sm"><i class="icon-eye"></i></a>
+                                          <a href="/deletestudent?id={{.ID}}" onclick="return confirm('Do you really want to delete?');" class="btn btn-danger btn-sm"><i class="icon-trash"></i></a>
+                                      </td>
+                                  </tr>
+                                  {{end}}
+                              </tbody>
+                          </table>
+                      </div>
+                     
+                  </div>
+              </div>
+          </div>
+      </div>
+       <form action="manage-students.php?Promote=" method="post">
+                      <div class="col-lg-4">
+                        
+                              
+                         
+                          <h3>Promote student to the next class</h3>
+                          <label>Enter Admission number<span id="" style="font-size:11px;color:red">*</span>  </label>
+          <input class="form-control" name="fname" required="required" >
+          <br>
+          <br>
+                                          <label>Select class<span id="" style="font-size:11px;color:red">*</span>  </label>
+
+      <select class="form-control" name="income"  id="income"required="required" >
+  
+  <option value="">Select Class</option>
+ 
+</select>
+  
+  
+
+  
+  
+ </select>
+ <div class="col-lg-6"><br><br>
+<input type="submit" class="btn btn-primary" name="Promote" value="Promote"></button>
+</div>
+</form>
+
+  </div>
+<br>
+<br><br>
+{{ template "scripts" . }}
+</div>
+<!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+</div>

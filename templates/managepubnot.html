@@ -1,0 +1,73 @@
+
+{{ template "header" . }}
+<div class="container-fluid page-body-wrapper">
+             
+            
+{{ template "sidebar" . }}
+<div class="main-panel">
+    <div class="content-wrapper">
+       <div class="page-header">
+        <h3 class="page-title"> Manage Public Notice </h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> Manage Public Notice</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-sm-flex align-items-center mb-4">
+                <h4 class="card-title mb-sm-0">Manage Public Notice</h4>
+                <a href="#" class="text-dark ml-auto mb-3 mb-sm-0"> View all Public Notice</a>
+              </div>
+              <div class="table-responsive border rounded p-1">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th class="font-weight-bold">S.No</th>
+                      <th class="font-weight-bold">Notice Title</th>
+                      <th class="font-weight-bold">Notice Date</th>
+                      <th class="font-weight-bold">Action</th>
+                      
+                    </tr>
+                  </thead>
+                  
+                  <tbody>
+                   {{ if .Notices }}
+                  {{ range .Notices }}
+                  
+                    <tr>
+                     
+                      <td>{{ .ID }}</td>
+            <td>{{ .Title }}</td>
+            <td>{{ .Message}}</td>
+        
+       
+                      <td>
+                            <a href="/delete-public-notice?delid={{ .ID }}" onclick="return confirm('Do you really want to Delete ?');" class="btn btn-danger btn-sm"> <i class="icon-trash"></i></a>
+                      </td> {{ end }}
+                      {{ else }}
+                   
+                      <td>No notices found.</td>
+                    </tr>
+
+                  </tbody>
+                  {{ end }}
+                </table>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- content-wrapper ends -->
+    {{ template "scripts" . }}
+  </div>
+  <!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+</div>

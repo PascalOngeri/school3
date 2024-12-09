@@ -1,0 +1,160 @@
+
+{{ template "header" . }}
+<div class="container-fluid page-body-wrapper">
+             
+            
+{{ template "sidebar" . }}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <h3 class="page-title">Update Payment</h3>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Update Payment</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-sm-flex align-items-center mb-4">
+                            <h4 class="card-title mb-sm-0">compulsory fee payents</h4>
+                            <a href="#" class="text-dark ml-auto mb-3 mb-sm-0">compulsory payments</a>
+                        </div>
+                        <div class="table-responsive border rounded p-1">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th class="font-weight-bold">Paymentname</th>
+                                        <th class="font-weight-bold">Form/Class/Grade</th>
+                                        <th class="font-weight-bold">Term1</th>
+                                        <th class="font-weight-bold">Term2</th>
+                                        <th class="font-weight-bold">Term3</th>
+                                        <th class="font-weight-bold">Total</th>
+                                        <th class="font-weight-bold">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   
+                                    <tr>
+                                       
+                                        
+                                        <td></td>
+                                        <td> </td>
+
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <a href="editC.php?editid=" class="btn btn-primary btn-sm"><i class="icon-eye"></i></a>
+                                            <a href="edelete.php?delid=" onclick="return confirm('Do you really want to delete?');" class="btn btn-danger btn-sm"><i class="icon-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <br>
+                        <br>
+                    </div>
+                     <div class="card-body">
+                        <div class="d-sm-flex align-items-center mb-4">
+                              <h4 class="card-title mb-sm-0">Optional fee payents</h4>
+                                                        <a href="#" class="text-dark ml-auto mb-3 mb-sm-0">Optional payments</a>
+                        </div>
+                        <div class="table-responsive border rounded p-1">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th class="font-weight-bold">Paymentname</th>
+                                       
+                                        <th class="font-weight-bold">Term1</th>
+                                        <th class="font-weight-bold">Term2</th>
+                                        <th class="font-weight-bold">Term3</th>
+                                        <th class="font-weight-bold">Total</th>
+                                        <th class="font-weight-bold">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   
+                                    <tr>
+                                       
+                                        
+                                        <td></td>
+                                        <td> </td>
+
+                                        <td></td>
+                                        <td></td>
+                                     
+                                        <td></td>
+                                        <td>
+                                            <a href="editO.php?editid=" class="btn btn-primary btn-sm"><i class="icon-eye"></i></a>
+                                            <a href="edelete.php?otherdel=" onclick="return confirm('Do you really want to delete?');" class="btn btn-danger btn-sm"><i class="icon-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                  
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                         <div class="card-body">
+                        <div class="d-sm-flex align-items-center mb-4">
+                           <h4 class="card-title mb-sm-0">Bus  payements</h4>
+                            <a href="#" class="text-dark ml-auto mb-3 mb-sm-0">Transport/bus payments</a>
+                        </div>
+                        <div class="table-responsive border rounded p-1">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th class="font-weight-bold">Area</th>
+                                       
+                                        <th class="font-weight-bold">Term1</th>
+                                        <th class="font-weight-bold">Term2</th>
+                                        <th class="font-weight-bold">Term3</th>
+                                        <th class="font-weight-bold">Total</th>
+                                        <th class="font-weight-bold">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                  
+                                    <tr>
+                                       
+                                        
+                                        <td></td>
+
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <a href="editB.php?editid=" class="btn btn-primary btn-sm"><i class="icon-eye"></i></a>
+                                            <a href="edelete.php?bdel=" onclick="return confirm('Do you really want to delete?');" class="btn btn-danger btn-sm"><i class="icon-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                   
+                                </tbody>
+                            </table>
+                        </div>
+                       
+                </div>
+            </div>
+        </div>
+       
+
+    </div>
+<br>
+<br><br>
+{{ template "scripts" . }}
+</div>
+<!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+</div>

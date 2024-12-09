@@ -1,0 +1,70 @@
+{{ template "header" . }}
+<div class="container-fluid page-body-wrapper">
+             
+            
+{{ template "sidebar" . }}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+       <div class="page-header">
+        <h3 class="page-title"> User logs </h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> User logs</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-sm-flex align-items-center mb-4">
+                <h4 class="card-title mb-sm-0">Track user Activities</h4>
+                <a href="#" class="text-dark ml-auto mb-3 mb-sm-0"> View all Logs</a>
+              </div>
+              <div class="table-responsive border rounded p-1">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      
+                      <th class="font-weight-bold">Date & time</th>
+                      <th class="font-weight-bold">User</th>
+                      <th class="font-weight-bold">Activities</th>
+                     
+                      <th class="font-weight-bold">Action</th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                    {{range .Users}}
+                    <tr>
+                        <td>{{.ID}}</td>
+                        <td>{{.Date}}</td>
+                        <td>{{.User}}</td>
+                        <td>{{.Activities}}</td>
+                    </tr>
+                    {{end}}
+                  </tbody>
+                
+                </table>
+              </div>
+           
+<form  method="post">
+ <button type="submit" class="btn btn-primary mr-2" name="generate">Generate User logs</button>
+</form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+    {{ template "scripts" . }}
+  </div>
+  <!-- main-panel ends -->
+</div>
+<!-- page-body-wrapper ends -->
+</div>
+<!-- container-scroller -->
