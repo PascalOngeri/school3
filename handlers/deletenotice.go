@@ -9,10 +9,11 @@ import (
 // DeleteNotice deletes a public notice by its ID
 func DeleteNotice(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Get the notice ID from the URL query string
-		delID := r.URL.Query().Get("delid")
+
+		// Get the ID from the query parameter
+		delID := r.URL.Query().Get("delID")
 		if delID == "" {
-			http.Error(w, "Missing notice ID", http.StatusBadRequest)
+			http.Error(w, "Missing ID parameter", http.StatusBadRequest)
 			return
 		}
 

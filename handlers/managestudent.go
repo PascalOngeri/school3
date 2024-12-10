@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	
 )
 
 // Struct kwa data ya mwanafunzi
@@ -23,7 +24,7 @@ type SelectStudent struct {
 // Function ya kusimamia wanafunzi
 func ManageStudent(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
+		
 		var sele []SelectStudent
 
 		rows, err := db.Query("SELECT id, adm, class, fname, mname, lname, fee, email, phone FROM registration")

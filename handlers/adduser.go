@@ -7,12 +7,20 @@ import (
 	"net/http"
 
 	"golang.org/x/crypto/bcrypt"
+	
 )
+
+// GetClassDetails retrieves t1, t2, t3, and fee for a specific class from the classes table
 
 // ManageUser handles adding and deleting users
 func ManageUser(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		
+
+		// Check if user is logged in
+	
 		if r.Method == http.MethodPost {
+
 			if err := r.ParseForm(); err != nil {
 				http.Error(w, "Unable to parse form: "+err.Error(), http.StatusBadRequest)
 				log.Printf("Form parsing error: %v", err)
@@ -42,10 +50,10 @@ func ManageUser(db *sql.DB) http.HandlerFunc {
 					log.Printf("Password hashing error: %v", err)
 					return
 				}
-
+ log.Printf("Authenticated user: %s",  hashedPassword)
 				// Insert data into the database
-				query := `INSERT INTO tblAdmin (AdminName, Email, UserName, Password, MobileNumber) VALUES (?, ?, ?, ?, ?)`
-				_, err = db.Exec(query, AName, email, username, hashedPassword, mobno)
+				query := `INSERT INTO tbladmin (AdminName, Email, UserName, Password, MobileNumber) VALUES (?, ?, ?, ?, ?)`
+				_, err = db.Exec(query, AName, email, username, pass, mobno)
 				if err != nil {
 					log.Printf("Database insertion error: %v", err)
 					http.Error(w, "Failed to add user: "+err.Error(), http.StatusInternalServerError)
@@ -57,7 +65,7 @@ func ManageUser(db *sql.DB) http.HandlerFunc {
 				return
 			}
 
-			if action == "Delete By username" {
+			if action == "Delete" {
 				// Delete user logic
 				username := r.FormValue("username")
 

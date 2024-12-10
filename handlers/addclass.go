@@ -5,9 +5,19 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	
+
+
 )
 
+// Replace this with your actual secret key
+
+
+// ValidateJWT function for validating the token
+
 func AddClass(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	// Validate JWT and get the claims
+	
 	if r.Method == http.MethodPost {
 		// Parse the form data
 		if err := r.ParseForm(); err != nil {
@@ -23,7 +33,7 @@ func AddClass(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		}
 
 		// Insert the class into the database
-		_, err := db.Exec("INSERT INTO classes (class,fee,t1,t2,t3) VALUES (?,?,?,?,?)", className, 0, 0, 0, 0)
+		_, err := db.Exec("INSERT INTO classes (class, fee, t1, t2, t3) VALUES (?,?,?,?,?)", className, 0, 0, 0, 0)
 		if err != nil {
 			http.Error(w, "Failed to add class: "+err.Error(), http.StatusInternalServerError)
 			log.Printf("Error inserting class into database: %v", err)

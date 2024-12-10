@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+
 )
 
 type STU struct {
@@ -33,6 +34,7 @@ func add1(i int) int {
 	return i + 1
 }
 func searchStudentHandler(w http.ResponseWriter, r *http.Request) {
+
 	funcMap := template.FuncMap{
 		"add1": add1, // Register the add1 function
 	}

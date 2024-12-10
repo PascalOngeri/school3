@@ -5,10 +5,12 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	
 )
 
 func Manageclass(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	// Fetch data from the database
+
 	users := []User{}
 	rows, err := db.Query("SELECT id, class, t1, t2, t3, fee FROM classes")
 	if err != nil {

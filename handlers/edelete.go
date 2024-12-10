@@ -2,10 +2,13 @@ package handlers
 
 import (
 	"html/template"
+
 	"net/http"
+	
 )
 
 func edelete(w http.ResponseWriter, r *http.Request) {
+
 	// Parse the template files
 	tmpl, err := template.ParseFiles("templates/edelete.html", "includes/footer.html", "includes/header.html", "includes/sidebar.html")
 	if err != nil {

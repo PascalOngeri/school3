@@ -1,0 +1,47 @@
+{{ template "header" . }}
+<div class="container-fluid page-body-wrapper">
+  {{ template "sidebar" . }}
+  <div class="main-panel">
+    <div class="content-wrapper">
+      <div class="page-header">
+        <h3 class="page-title">Edit Other Payment</h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Edit Other Payment</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title" style="text-align: center;">Update Other Payment</h4>
+              <form class="forms-sample" method="post" action="/edit-other-payment">
+                <input type="hidden" name="id" value="{{.ID}}" />
+                <div class="form-group">
+                  <label>Payment Type</label>
+                  <input type="text" name="fname" class="form-control" value="{{.Type}}" required>
+                </div>
+                <div class="form-group">
+                  <label>Term 1</label>
+                  <input type="text" name="lname" class="form-control" value="{{.Term1}}" required>
+                </div>
+                <div class="form-group">
+                  <label>Term 2</label>
+                  <input type="text" name="stuemail" class="form-control" value="{{.Term2}}" required>
+                </div>
+                <div class="form-group">
+                  <label>Term 3</label>
+                  <input type="text" name="dob" class="form-control" value="{{.Term3}}" required>
+                </div>
+                <button type="submit" class="btn btn-primary mr-2">Update</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{ template "scripts" . }}
+  </div>
+</div>

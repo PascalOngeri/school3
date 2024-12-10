@@ -1,0 +1,51 @@
+{{ template "header" . }}
+<div class="container-fluid page-body-wrapper">
+    {{ template "sidebar" . }}
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h3 class="page-title">Edit Bus payment</h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Edit Bus payment</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="row">
+                <div class="col-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title" style="text-align: center;">Update Bus Payment</h4>
+                            <form class="forms-sample" method="post" enctype="multipart/form-data" action="/editB?id={{.ID}}">
+                                <input type="text" name="id" value="{{.ID}}" class="form-control" hidden="true">
+                                <div class="form-group">
+                                    <label for="exampleInputName1">Area</label>
+                                    <input type="text" name="fname" value="{{.Area}}" class="form-control" required='true'>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName1">Term 1</label>
+                                    <input type="number" name="lname" value="{{.T1}}" class="form-control" required='true'>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName1">Term 2</label>
+                                    <input type="number" name="stuemail" value="{{.T2}}" class="form-control" required='true'>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName1">Term 3</label>
+                                    <input type="number" name="dob" value="{{.T3}}" class="form-control" required='true'>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputName1">Amount</label>
+                                    <input type="number" name="amount" value="{{.Amount}}" class="form-control" required='true'>
+                                </div>
+                                <button type="submit" class="btn btn-primary mr-2" name="submit">Update</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ template "scripts" . }}
+</div>

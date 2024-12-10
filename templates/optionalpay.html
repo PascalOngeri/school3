@@ -1,109 +1,99 @@
 {{ template "header" . }}
 <div class="container-fluid page-body-wrapper">
-             
-            
-{{ template "sidebar" . }}
-
-<div class="main-panel">
-    <div class="content-wrapper">
-      <div class="page-header">
-        <h3 class="page-title"> Assign optional payments </h3>
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page"> optional payments</li>
-          </ol>
-        </nav>
-      </div>
-      <div class="row">
-    
-        <div class="col-12 grid-margin stretch-card">
-          <div class="card">
-            <div class="card-body">
-             
-              <form class="forms-sample" method="post" action="optpay.php">
-                
-                <div class="form-group">
-                  <label for="exampleInputName1">Enter Admission Number</label>
-                  <input type="text" name="adm" value="" class="form-control" >
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail3">Select Payment</label>
-                  <select  name="other" class="form-control" >
-                    <option value="">Select Payment</option>
-                  
-
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail3">Select Period</label>
-                  <select  name="oderterm" class="form-control" >
-                    <option value="">Select Term</option>
-                     <option value="ot1">Term 1</option>
-                      <option value="ot2">Term 2</option>
-                       <option value="ot3">Term 3</option>
-                        <option value="ot1t2">Term 1 & Term 2</option>
-                        <option value="owhole">Whole year</option>
-                  
-                  </select>
-                </div>
-                <button type="submit" class="btn btn-primary mr-2" name="oder">Add</button>
-                <button type="submit" class="btn btn-primary mr-2" name="del">Delete</button>
-               <br><br>
-
-              </form>
-              <center> <label for="exampleInputName1">Transportation payments</label></center>
-               <form class="forms-sample" method="post" action="optpay.php">
-                
-                <div class="form-group">
-                  <label for="exampleInputName1">Enter Admission Number</label>
-                  <input type="text" name="adm" value="" class="form-control" >
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail3">Select Area</label>
-                  <select  name="area" class="form-control" >
-                    <option value="">Select Area</option>
-                  
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail3">Select Period</label>
-                  <select  name="busp" class="form-control" >
-                    <option value="">Select period</option>
-                     <option value="bt1">Term 1</option>
-                      <option value="bt2">Term 2</option>
-                       <option value="bt3">Term 3</option>
-                        <option value="bt1t2">Term 1 & Term 2</option>
-                        <option value="bwhole">Whole year</option>
-                  
-                  </select>
-                </div>
-
-                 
-                <div class="form-group">
-                  <label for="exampleInputEmail3">Select Time of the day</label>
-                  <select  name="bus" class="form-control" >
-                    <option value="">Select</option>
-                     <option value="Morning">Morning</option>
-                      <option value="Evening">Evening</option>
-                       <option value="Morning and evening">Morning & Evening</option>
-                       
-                  
-                  </select>
-                </div>
-                <button type="submit" class="btn btn-primary mr-2" name="submit">Add</button>
-                <button type="submit" class="btn btn-primary mr-2" name="removebus">Delete</button>
-               
-
-              </form>
+  {{ template "sidebar" . }}
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="page-header">
+                <h3 class="page-title">Assign Optional Payments</h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Optional Payments</li>
+                    </ol>
+                </nav>
             </div>
-          </div>
+            <div class="row">
+                <div class="col-12 grid-margin stretch-card">
+                    <div class="card">
+
+                        <div class="card-body">
+                            <!-- Payment Form -->
+                            <h3>Extra services</h3>
+                            <form class="forms-sample" method="POST" action="/paymentinsert">
+                                <div class="form-group">
+                                    <label for="adm">Enter Admission Number</label>
+                                    <input type="text" name="adm" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="other">Select Payment</label>
+                                    <select name="other" class="form-control" required>
+                                        <option value="">Select Payment</option>
+                                        {{ range .Payments }}
+                                        <option value="{{ .ID }}">{{ .PaymentName }}</option>
+                                        {{ end }}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="term">Select Term</label>
+                                    <select name="term" class="form-control" required>
+                                        <option value="">Select Term</option>
+                                        <option value="term1">Term 1</option>
+                                        <option value="term2">Term 2</option>
+                                        <option value="term3">Term 3</option>
+                                        <option value="term1term2">Term 1 and Term 2</option>
+                                        <option value="all">All Terms</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </form>
+<br>
+<br>
+
+                            <!-- Transport Form -->
+                            <h3>Transportation</h3>
+                            <form class="forms-sample" method="POST" action="/transportinsert">
+                                <div class="form-group">
+                                    <label for="adm">Enter Admission Number</label>
+                                    <input type="text" name="adm" class="form-control" required>
+                                </div>
+                              
+                                <div class="form-group">
+                                    <label for="area">Select Area</label>
+                                    <select name="area" class="form-control" required>
+                                        <option value="">Select Payment</option>
+                                        {{ range .Areas }}
+                                        <option value="{{ .Name }}">{{ .Name }}</option>
+                                        {{ end }}
+                                        
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="term">Select Term</label>
+                                    <select name="term" class="form-control" required>
+                                        <option value="">Select Term</option>
+                                        <option value="term1">Term 1</option>
+                                        <option value="term2">Term 2</option>
+                                        <option value="term3">Term 3</option>
+                                        <option value="term1term2">Term 1 and Term 2</option>
+                                        <option value="all">All Terms</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="transport">Select Transport</label>
+                                    <select name="transport" class="form-control" required>
+                                        <option value="">Select Transport Option</option>
+                                        <option value="morning">Morning</option>
+                                        <option value="evening">Evening</option>
+                                        <option value="both">Morning and Evening</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+        {{ template "scripts" . }}
     </div>
-    {{ template "scripts" . }}
-  </div>
-  <!-- main-panel ends -->
-</div>
-<!-- page-body-wrapper ends -->
 </div>

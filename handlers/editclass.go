@@ -12,8 +12,15 @@ import (
 // EditClass handler for editing class details
 func EditClass(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Get the ID from the query string
+
+		// Get the edit ID from the URL
 		editID := r.URL.Query().Get("editid")
+		if editID == "" {
+			http.Error(w, "Missing edit ID parameter", http.StatusBadRequest)
+			return
+		}
+
+		// Define the class variable
 		var class Class
 
 		// Fetch class details from the database

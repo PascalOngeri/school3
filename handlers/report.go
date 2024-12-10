@@ -2,10 +2,13 @@ package handlers
 
 import (
 	"html/template"
+	
 	"net/http"
+	
 )
 
 func report(w http.ResponseWriter, r *http.Request) {
+	
 	// Parse the template files
 	tmpl, err := template.ParseFiles("templates/report.html", "includes/footer.html", "includes/header.html", "includes/sidebar.html")
 	if err != nil {

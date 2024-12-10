@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>  {{.Title}}</title>
+    <style>
+        /* CSS for loader */
+        .loader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 1.5s linear infinite;
+            margin: auto;
+            margin-top: 20%;
+            display: none; /* Initially hidden */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Basic styling */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            background-color: green;
+            overflow: hidden;
+        }
+        .navbar .list {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            overflow: hidden;
+        }
+        .navbar .list li {
+            float: left;
+        }
+        .navbar .list li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        .navbar .list li a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        /* Responsive styling */
+        @media screen and (max-width: 600px) {
+            .navbar .list {
+                float: none;
+                overflow: hidden;
+            }
+            .navbar .list li {
+                float: none;
+                width: 100%;
+            }
+        }
+    </style>
+
+    <script>
+        var sessionTimeout = 600; // Session timeout in seconds (10 minutes)
+
+        function redirectToLogout() {
+            window.location.href = 'logout.php'; // Change 'logout.php' to your logout page
+        }
+
+        function startSessionTimer() {
+            var timer = setTimeout(redirectToLogout, sessionTimeout * 1000);
+
+            window.addEventListener('mousemove', function() {
+                clearTimeout(timer);
+                timer = setTimeout(redirectToLogout, sessionTimeout * 1000);
+            });
+            window.addEventListener('keypress', function() {
+                clearTimeout(timer);
+                timer = setTimeout(redirectToLogout, sessionTimeout * 1000);
+            });
+        }
+
+        window.onload = function() {
+            startSessionTimer();
+        };
+
+        function showLoader() {
+            document.getElementById("loader").style.display = "block";
+        }
+
+        function hideLoader() {
+            document.getElementById("loader").style.display = "none";
+        }
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-inverse" style="position:sticky;top:0;z-index:99999 ">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><h3 style="color:greenyellow;">Infinityschools Analytics<h3></a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="https://www.infinitytechafrica.com" style="color: white"  onclick="showLoader();"><i class="fas fa-globe"></i> Visit Website</a></li>
+                   
+                    <li><a href="#"style="color: white"  onclick="showLoader();"><i class="fa fa-file-pdf"></i> Download fee structure</a></li>
+                    <li><a href="contact.php" style="color: white"  onclick="showLoader();"><i class="https://www.infinitytechafrica.com"></i> Contact Us</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" style="color: white" data-toggle="modal" data-target="#updateModal"  onclick="showLoader();" ><i class="fa fa-user"></i> Settings</a></li>
+                    <li><a href="/logout" style="color: white"  onclick="showLoader();"><i class="fa fa-sign-out-alt" ></i> Log out</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="loader" id="loader"></div>
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">Update Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="settings-form" method="post" >
+                        <div class="form-group">
+                          <input type="hidden" class="input3" name="adm" value="{{.AdmissionNumber}}">
+                            <label for="username">Username:</label>
+                            <input type="text" class="form-control" id="username" name="username" value="{{.Username}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="text" class="form-control" id="password" name="password" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number:</label>
+                            <input type="text" class="form-control" id="phone" name="phone" value= "{{.Phone}}">
+                        </div>
+                        <button type="submit" class="btn btn-primary"  name="update"onclick="showLoader();">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="section">
+        <center>
+            <h3 class="text" style="text-align:center;">Welcome {{.Username}}</h3>
+            <label>Student Admission number {{.AdmissionNumber}}</label>
+           
+        </center>
+        <br><br><hr><br>
+        <div class="row">
+           
+            <div class="col-md-6">
+                <div class="content">
+                     <center>
+                        <h3>PAY FEE</h3>
+                        <form method="post" action="/ProcessPayment">
+                            <div class="lbox1">    
+                                <input type="hidden" class="input3" name="adm" value="{{.AdmissionNumber}}"><br>
+                            </div>
+                           
+                            <div class="lbox1">    
+                                <input style="
+                                 border-radius: 20px;height:40px;"  class="input3" name="phone" placeholder="enter phone"><br>
+                            </div>
+                          <br>
+                             <div class="lbox1">    
+                                <input style="
+                                 border-radius: 20px;height:40px;" type="nu" class="input3" name="ammount" placeholder="enter amount"><br>
+                            </div>
+                           <br>
+                             <button type="submit" class="btn" name="pay" style="background-color: green; color:white;border-radius: 20px;height:40px;" onclick="showLoader(); showMesage()">PAY</button>
+                            
+                        </form>
+                    </center><br>
+                    <center>
+                        <h3>Click to download</h3>
+                        <form method="post" action="/generete">
+                            <div class="lbox1">    
+                                <input type="hidden" class="input3" name="adm" value="{{.AdmissionNumber}}"><br>
+                            </div>
+                            <button type="submit" class="btn" name="action" value="generate" style="background-color: lightblue; border-radius: 20px;height:40px;" onclick="showLoader(); showMessage()">Download Fee Statement!!!!!</button>
+                            
+                        </form>
+                    </center>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="right-pdf">
+                    <br><br>
+                     <h3>Public Notice</h3>
+                    <table class="table table-striped">
+                       <thead>
+                          <tr>
+                            <th class="font-weight-bold">S.No</th>
+                            <th class="font-weight-bold">Notice Title</th>
+                           
+                            <th class="font-weight-bold">Description</th>
+                        
+                          </tr>
+                        </thead>
+                         <tbody>
+                            {{range .Notices}}
+                          <tr>
+                           
+                            <td>1</td>
+                            <td>{{.Title}}</td>
+                            <td>{{.Message}}</td>
+                                                      
+ 
+                          </tr>
+                          {{end}}
+                        </tbody>
+                    </table>
+                    <br>
+                    <br>
+                    <h3>Payment History</h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>SNo</th>
+                                                <th>RegNo</th>
+                                                <th>Date</th>
+                                                <th>Amount Received</th>
+                                                <th>Balance</th>
+                                               
+                                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .Payments}}
+                            <tr>
+                                <td>{{.SNo}}</td>
+                                <td>{{.RegNo}}</td>
+                                <td>{{.Date}}</td>
+                                <td>{{.Amount}}</td>
+                                <td>{{.Balance}}</td>
+                                <td width="100">
+                                    &nbsp;&nbsp;
+                                                    <a href="
+                                                    " class="btn btn-primary btn-xs" style="background-color: green" >Received</a>
+                                   </td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                        
+                         
+                                                   
+                                                   
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+<br><br>
+{{ template "scripts" . }}
+
+    <style>
+        /* Styling for the pop-up message */
+        .popup {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            text-align: center;
+            z-index: 9999;
+        }
+        .popup-content {
+            display: inline-block;
+            padding: 20px;
+            background-color: lightgreen;
+            border-radius: 5px;
+            animation: slideIn 0.5s forwards;
+        }
+        @keyframes slideIn {
+            from { left: -100%; opacity: 0; }
+            to { left: 0; opacity: 1; }
+        }
+    </style>
+
+    <script>
+        function showMessage() {
+            alert(" generation Started please wait !!");
+        }
+          function showMesage() {
+            alert(" Payment initiated please wait !!");
+        }
+
+        // Function to show loader
+        function showLoader() {
+            document.getElementById("loader").style.display = "block";
+            fetchData();
+        }
+
+        // Function to simulate fetching data
+        function fetchData() {
+            setTimeout(hideLoader, 1000);
+        }
+
+        // Function to hide loader
+        function hideLoader() {
+            document.getElementById("loader").style.display = "none";
+        }
+
+        window.onload = function() {
+            var popup = document.querySelector('.popup');
+            if (popup) {
+                popup.style.display = 'block';
+                setTimeout(function() {
+                    popup.style.display = 'none';
+                }, 1000); // Disappear after 4 seconds
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var settingsLink = document.getElementById("settings-link");
+            var settingsDiv = document.getElementById("settings");
+            var settingsForm = document.getElementById("settings-form");
+
+            settingsLink.addEventListener("click", function(event) {
+                event.preventDefault();
+                settingsDiv.style.display = (settingsDiv.style.display === "none") ? "block" : "none";
+            });
+
+            settingsForm.addEventListener("submit", function(event) {
+                event.preventDefault();
+                var username = document.getElementById("username").value;
+                var password = document.getElementById("password").value;
+                var phone = document.getElementById("phone").value;
+                // Perform validation and update logic here
+                // Use AJAX to send the form data to the server for processing
+            });
+        });
+    </script>
+</body>
+</html>

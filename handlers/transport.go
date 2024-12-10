@@ -5,16 +5,28 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	
 )
 
-// PageData holds data to be passed to the template
-type PageData struct {
-	Message string
-	Total   float64
+// TemplateData holds data to be passed to the template
+type TemplateData struct {
+	Message            string
+	Total              float64
+	CompulsoryPayments []Payment
+	OptionalPayments   []Payment
+	BusPayments        []Payment
+	Title              string
+	Username           string
+	AdmissionNumber    string
+	Password           string
+	Phone              string
+	Payments           []Payment
+	Notices            []Notice
 }
 
 // FormHandler handles form submission and database operations
 func FormHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	
 	if r.Method == http.MethodPost {
 		// Retrieve form values
 		term1Str := r.FormValue("term1")

@@ -18,25 +18,56 @@
         <div class="col-12 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
-              <form class="forms-sample" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                  <label for="exampleInputName1">Enter phone number</label>
-                  <input type="text" name="phone" value="" class="form-control" placeholder="Enter phone number">
-                </div>
+              <form class="forms-sample" method="post" action="/send">
+               <div class="form-group">
+  <label for="exampleInputName1">Enter phone number</label>
+  <input type="text" name="phone" class="form-control" id="phone-input" placeholder="Enter phone number">
+</div>
+
                 <div class="form-group">
                   <label for="exampleInputName1">Message body</label>
                   <input type="text" name="message" value="" class="form-control" placeholder="Enter message">
                 </div>
-                <button type="submit" class="btn btn-primary mr-2" name="submit">Select all phone numbers</button>
-                <input type="file" name="file" />
+                 <!--  <input type="file" name="file" />
                 <input type="submit" name="teacherexcel" id="teacherexcel" class="btn btn-info btn-lg" value="Import Excel" />
-                <button type="submit" class="btn btn-primary mr-2" name="send">Send</button>
+                -->
+                <button type="submit" class="btn btn-primary mr-2" name="send">Send</button> 
               </form>
-              
+             <form id="fetch-phone-form">
+  <br>
+  <button type="submit" class="btn btn-primary mr-2" name="submit">Select all phone numbers</button>
+</form>
             </div>
           </div>
         </div>
       </div>
+     <script>
+  // Add an event listener to handle form submission
+  document.getElementById("fetch-phone-form").addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    // Send a POST request to fetch phone numbers
+    fetch("/api/select-phones", {
+      method: "POST",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch phone numbers");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Update the phone input field with the fetched phone numbers
+        const phoneInput = document.getElementById("phone-input");
+        phoneInput.value = data.phoneNumbers || "No phone numbers found";
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred while fetching phone numbers.");
+      });
+  });
+</script>
+      
     </div>
 
     {{ template "scripts" . }}

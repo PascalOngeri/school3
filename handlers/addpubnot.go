@@ -5,9 +5,11 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+
 )
 
 func AddPubNot(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	
 	if r.Method == http.MethodPost {
 		// Parse the form data
 		if err := r.ParseForm(); err != nil {

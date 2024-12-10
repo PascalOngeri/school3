@@ -6,12 +6,14 @@ import (
 	"log"
 	"mime/multipart"
 	"net/http"
+	
 	"os"
 	"path/filepath"
 )
 
 // SettingsHandler handles settings updates
 func SettingsHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	
 	if r.Method == http.MethodPost {
 		handlePostRequest(w, r, db)
 		return

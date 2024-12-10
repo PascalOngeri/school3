@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"golang.org/x/crypto/bcrypt"
+
 )
 
 type User struct {
@@ -50,6 +50,7 @@ func getUserByEmail(db *sql.DB, id string) (User, error) {
 // Handler to update user details
 func UpdateUserFormHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	// Handle GET request to display the form
+	
 	if r.Method == "GET" {
 		id := r.URL.Query().Get("id")
 		if id == "" {
@@ -88,61 +89,44 @@ func UpdateUserFormHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	}
 
 	// Handle POST request to update the user data
-	if r.Method == "POST" {
-		// Get form values
-		email := r.FormValue("stuemail")
-		username := r.FormValue("uname")
-		password := r.FormValue("password")
-		fname := r.FormValue("fname")
-		mname := r.FormValue("mname")
-		lname := r.FormValue("lname")
-		class := r.FormValue("class")
-		gender := r.FormValue("gender")
-		dob := r.FormValue("dob")
-		adm := r.FormValue("stuid")
-		faname := r.FormValue("faname")
-		maname := r.FormValue("maname")
-		connum := r.FormValue("connum")
-		altconnum := r.FormValue("altconnum")
-		address := r.FormValue("address")
+if r.Method == "POST" {
+    // Get form values
+    email := r.FormValue("stuemail")
+    username := r.FormValue("uname")
+    password := r.FormValue("password")
+    fname := r.FormValue("fname")
+    mname := r.FormValue("mname")
+    lname := r.FormValue("lname")
+    class := r.FormValue("class")
+    gender := r.FormValue("gender")
+    dob := r.FormValue("dob")
+    adm := r.FormValue("stuid")
+    faname := r.FormValue("faname")
+    maname := r.FormValue("maname")
+    connum := r.FormValue("connum")
+    altconnum := r.FormValue("altconnum")
+    address := r.FormValue("address")
 
-		// Validate required fields
-		if email == "" || username == "" || fname == "" || lname == "" || class == "" {
-			http.Error(w, "All required fields must be filled", http.StatusBadRequest)
-			return
-		}
+    // Validate required fields
+    if email == "" || username == "" || fname == "" || lname == "" || class == "" {
+        http.Error(w, "All required fields must be filled", http.StatusBadRequest)
+        return
+    }
 
-		// Hash password if provided
-		var hashedPassword []byte
-		if password != "" {
-			var err error
-			hashedPassword, err = bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-			if err != nil {
-				log.Printf("Error hashing password: %v", err)
-				http.Error(w, "Error processing password", http.StatusInternalServerError)
-				return
-			}
-		}
+    // Update user details in the database (use plain password)
+    _, err := db.Exec(
+        "UPDATE registration SET fname=?, mname=?, lname=?, gender=?, faname=?, maname=?, class=?, phone=?, phone1=?, address=?, email=?, username=?, password=?, dob=? WHERE adm=?",
+        fname, mname, lname, gender, faname, maname, class, connum, altconnum, address, email, username, password, dob, adm,
+    )
+    if err != nil {
+        log.Printf("Error updating user: %v", err)
+        http.Error(w, "Error updating user details", http.StatusInternalServerError)
+        return
+    }
 
-		// Use the hashed password or the existing password
-		updatePassword := hashedPassword
-		if password == "" {
-			// Use the current password if no new one is provided
-			updatePassword = nil
-		}
-
-		// Update user details in the database
-		_, err := db.Exec(
-			"UPDATE registration SET fname=?, mname=?, lname=?, gender=?, faname=?, maname=?, class=?, phone=?, phone1=?, address=?, email=?, username=?, password=?, dob=? WHERE adm=?",
-			fname, mname, lname, gender, faname, maname, class, connum, altconnum, address, email, username, updatePassword, dob, adm,
-		)
-		if err != nil {
-			log.Printf("Error updating user: %v", err)
-			http.Error(w, "Error updating user details", http.StatusInternalServerError)
-			return
-		}
-
-		// Redirect after successful update
-		http.Redirect(w, r, "/managestudent?success=1", http.StatusSeeOther)
-	}
+    // Redirect after successful update
+    http.Redirect(w, r, "/managestudent?success=1", http.StatusSeeOther)
 }
+
+}
+//C:\Users\SIMON\Downloads\nginx>nginx.exe start nginx

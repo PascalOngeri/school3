@@ -5,18 +5,21 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+
 )
 
 // Notice represents a public notice with a title and message
 type Notice struct {
 	Title   string
 	Message string
+	Date    string
 	ID      interface{}
 }
 
 // ManagePubNot handles public notices by fetching them from the database
 func ManagePubNot(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		
 		// Query to fetch public notices
 		query := "SELECT ID, NoticeTitle, NoticeMessage FROM tblpublicnotice"
 		rows, err := db.Query(query)

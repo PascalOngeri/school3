@@ -5,10 +5,12 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	
 )
 
 func UpdateClass(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		
 		if r.Method == http.MethodPost {
 			// Pata data kutoka kwenye fomu
 			id := r.FormValue("id")
