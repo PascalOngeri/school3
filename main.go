@@ -356,8 +356,8 @@ func main() {
 		handlers.Send(w, r, db)
 	}).Methods("GET", "POST")
 
-	log.Println("Server is running on :8096")
-	if err := http.ListenAndServe("localhost:8096", router); err != nil {
+	log.Println("Server is running on :8097")
+	if err := http.ListenAndServe("localhost:8097", router); err != nil {
 		log.Fatal("Error starting server: ", err)
 	}
 }
