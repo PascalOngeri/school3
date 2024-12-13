@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	
 )
 
 // Class represents a class structure for dropdown data
@@ -13,6 +14,7 @@ import (
 // SetFeeHandler handles the Set Fee page
 func SetFeeHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	// Parse templates
+
 	tmpl, err := template.ParseFiles(
 		"templates/regfee.html",
 		"includes/header.html",
@@ -104,11 +106,7 @@ func InsertOrUpdateFee(db *sql.DB, class, payName string, term1, term2, term3, t
         VALUES (?, ?, ?, ?, ?, ?)
     `
 	_, err := db.Exec(insertQuery, class, payName, term1, term2, term3, total)
-	if err != nil {
-		log.Println("Insert into feepay failed, attempting update:", err)
-
-		// Update query for classes table
-		updateQuery := `
+	updateQuery := `
             UPDATE classes
             SET 
                 t1 = t1 + ?, 
@@ -117,7 +115,12 @@ func InsertOrUpdateFee(db *sql.DB, class, payName string, term1, term2, term3, t
                 fee = fee + ?
             WHERE class = ?
         `
-		_, err = db.Exec(updateQuery, term1, term2, term3, total, class)
+	_, err = db.Exec(updateQuery, term1, term2, term3, total, class)
+	if err != nil {
+		log.Println("Insert into feepay failed, attempting update:", err)
+
+		// Update query for classes table
+
 		if err != nil {
 			log.Println("Update classes failed:", err)
 			return err

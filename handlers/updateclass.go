@@ -5,10 +5,22 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	
 )
 
 func UpdateClass(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		roleCookie, err := r.Cookie("role")
+	if err != nil {
+		log.Printf("Error getting role cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	
+	role := roleCookie.Value
+	//userID := r.URL.Query().Get("userID")
+	// If role is "admin", show the dashboard
+	if role == "admin" {
 		if r.Method == http.MethodPost {
 			// Pata data kutoka kwenye fomu
 			id := r.FormValue("id")
@@ -56,5 +68,9 @@ func UpdateClass(db *sql.DB) http.HandlerFunc {
 		} else {
 			http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		}
+	}else {
+		// If role is not recognized, redirect to login
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
+}
 }

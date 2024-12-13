@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	
 )
 
 // Struct kwa data ya mwanafunzi
@@ -23,7 +24,17 @@ type SelectStudent struct {
 // Function ya kusimamia wanafunzi
 func ManageStudent(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-
+		roleCookie, err := r.Cookie("role")
+	if err != nil {
+		log.Printf("Error getting role cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	
+	role := roleCookie.Value
+	//userID := r.URL.Query().Get("userID")
+	// If role is "admin", show the dashboard
+	if role == "admin" {
 		var sele []SelectStudent
 
 		rows, err := db.Query("SELECT id, adm, class, fname, mname, lname, fee, email, phone FROM registration")
@@ -68,5 +79,9 @@ func ManageStudent(db *sql.DB) http.HandlerFunc {
 			log.Printf("Error executing template: %v\n", err)
 			return
 		}
+	}else {
+		// If role is not recognized, redirect to login
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
+}
 }

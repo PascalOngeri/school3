@@ -6,12 +6,24 @@ import (
 	"log"
 	"mime/multipart"
 	"net/http"
+	
 	"os"
 	"path/filepath"
 )
 
 // SettingsHandler handles settings updates
 func SettingsHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	roleCookie, err := r.Cookie("role")
+	if err != nil {
+		log.Printf("Error getting role cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	
+	role := roleCookie.Value
+	//userID := r.URL.Query().Get("userID")
+	// If role is "admin", show the dashboard
+	if role == "admin" {
 	if r.Method == http.MethodPost {
 		handlePostRequest(w, r, db)
 		return
@@ -34,6 +46,10 @@ func SettingsHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	if err := tmpl.Execute(w, nil); err != nil {
 		http.Error(w, "Error rendering template", http.StatusInternalServerError)
 		log.Printf("Template execution error: %v", err)
+	}
+}else {
+		// If role is not recognized, redirect to login
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
 }
 

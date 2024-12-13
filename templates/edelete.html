@@ -39,23 +39,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   
+                                    {{ range .CompulsoryPayments }}
                                     <tr>
                                        
                                         
-                                        <td></td>
-                                        <td> </td>
+                                        <td>{{ .PaymentName  }}</td>
+                                        <td>{{ .Form }}</td>
+                                        <td>{{ .Term1 }}</td>
+                                        <td>{{ .Term2 }}</td>
+                                        <td>{{ .Term3 }}</td>
+                                        <td>{{ .Total }}</td>
 
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
                                         <td>
-                                            <a href="editC.php?editid=" class="btn btn-primary btn-sm"><i class="icon-eye"></i></a>
-                                            <a href="edelete.php?delid=" onclick="return confirm('Do you really want to delete?');" class="btn btn-danger btn-sm"><i class="icon-trash"></i></a>
+                                            <a href="/edit-compulsory-payment?id={{ .ID }}" class="btn btn-primary btn-sm"><i class="icon-eye"></i></a>
+                                            <a href="/deletecompulsory?delid={{ .ID }}" onclick="return confirm('Do you really want to delete?');" class="btn btn-danger btn-sm"><i class="icon-trash"></i></a>
                                         </td>
                                     </tr>
-                                    
+                                    {{ end }}
                                 </tbody>
                             </table>
                         </div>
@@ -83,23 +83,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   
-                                    <tr>
-                                       
-                                        
-                                        <td></td>
-                                        <td> </td>
-
-                                        <td></td>
-                                        <td></td>
-                                     
-                                        <td></td>
-                                        <td>
-                                            <a href="editO.php?editid=" class="btn btn-primary btn-sm"><i class="icon-eye"></i></a>
-                                            <a href="edelete.php?otherdel=" onclick="return confirm('Do you really want to delete?');" class="btn btn-danger btn-sm"><i class="icon-trash"></i></a>
-                                        </td>
-                                    </tr>
-                                  
+                                    {{ range .OptionalPayments }}
+                                        <tr>
+                                            <td>{{ .PaymentName }}</td>
+                                            <td>{{ .Term1 }}</td>
+                                            <td>{{ .Term2 }}</td>
+                                            <td>{{ .Term3 }}</td>
+                                            <td>{{ .Total }}</td>
+                                            <td>
+                                                <a href="/edit-other-payment?id={{ .ID }}" class="btn btn-primary btn-sm">Edit</a>
+                                                <a href="/deleteother?otherdel={{ .PaymentName }}" onclick="return confirm('Do you really want to delete?');" class="btn btn-danger btn-sm">Delete</a>
+                                            </td>
+                                        </tr>
+                                        {{ end }}
                                 </tbody>
                             </table>
                         </div>
@@ -124,22 +120,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                  
+                                    {{ range .BusPayments }}
                                     <tr>
-                                       
-                                        
-                                        <td></td>
-
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>{{ .PaymentName }}</td>
+                                        <td>{{ .Term1 }}</td>
+                                        <td>{{ .Term2 }}</td>
+                                        <td>{{ .Term3 }}</td>
+                                        <td>{{ .Total }}</td>
                                         <td>
-                                            <a href="editB.php?editid=" class="btn btn-primary btn-sm"><i class="icon-eye"></i></a>
-                                            <a href="edelete.php?bdel=" onclick="return confirm('Do you really want to delete?');" class="btn btn-danger btn-sm"><i class="icon-trash"></i></a>
+                                            <a href="editB?id={{ .ID }}" class="btn btn-primary btn-sm">Edit</a>
+                                            <a href="/deletebus?bdel={{ .PaymentName }}" onclick="return confirm('Do you really want to delete?');" class="btn btn-danger btn-sm">Delete</a>
                                         </td>
                                     </tr>
-                                   
+                                    {{ end }}
                                 </tbody>
                             </table>
                         </div>

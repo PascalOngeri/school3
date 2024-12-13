@@ -23,20 +23,20 @@
                   <input type="text" class="form-control" id="className" name="className" value="{{.Class.Class}}" required>
                 </div>
                 <div class="form-group">
-                  <label for="t1Fee">Term 1 Fee</label>
-                  <input type="number" class="form-control" id="t1Fee" name="t1Fee" value="{{.Class.T1}}" required>
+                  <label for="t1Fee" style="display: none;">Term 1 Fee</label>
+                  <input type="number" class="form-control" id="t1Fee" name="t1Fee" value="{{.Class.T1}}" hidden required>
                 </div>
                 <div class="form-group">
-                  <label for="t2Fee">Term 2 Fee</label>
-                  <input type="number" class="form-control" id="t2Fee" name="t2Fee" value="{{.Class.T2}}" required>
+                  <label for="t2Fee" style="display: none;">Term 2 Fee</label>
+                  <input type="number" class="form-control" id="t2Fee" name="t2Fee" value="{{.Class.T2}}" hidden required>
                 </div>
                 <div class="form-group">
-                  <label for="t3Fee">Term 3 Fee</label>
-                  <input type="number" class="form-control" id="t3Fee" name="t3Fee" value="{{.Class.T3}}" required>
+                  <label for="t3Fee" style="display: none;">Term 3 Fee</label>
+                  <input type="number" class="form-control" id="t3Fee" name="t3Fee" value="{{.Class.T3}}" hidden required>
                 </div>
                 <div class="form-group">
-                  <label for="totalFee">Total Fee</label>
-                  <input type="number" class="form-control" id="totalFee" name="totalFee" value="{{.Class.Fee}}" readonly>
+                  <label for="totalFee" style="display: none;">Total Fee</label>
+                  <input type="number" class="form-control" id="totalFee" name="totalFee" value="{{.Class.Fee}}" hidden readonly>
                 </div>
                 <button type="submit" class="btn btn-primary">Save Changes</button>
               </form>

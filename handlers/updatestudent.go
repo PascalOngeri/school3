@@ -6,10 +6,11 @@ import (
 	"log"
 	"net/http"
 
-	"golang.org/x/crypto/bcrypt"
+
 )
 
 type User struct {
+	AdmissionNumber string
 	ID       int
 	Class    string
 	T1       string
@@ -36,6 +37,9 @@ type User struct {
 	Date       string
 	User       string
 	Activities string
+
+	
+	Username string
 }
 
 // Function to get user by ID
@@ -50,6 +54,17 @@ func getUserByEmail(db *sql.DB, id string) (User, error) {
 // Handler to update user details
 func UpdateUserFormHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	// Handle GET request to display the form
+	roleCookie, err := r.Cookie("role")
+	if err != nil {
+		log.Printf("Error getting role cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	
+	role := roleCookie.Value
+	//userID := r.URL.Query().Get("userID")
+	// If role is "admin", show the dashboard
+	if role == "admin" {
 	if r.Method == "GET" {
 		id := r.URL.Query().Get("id")
 		if id == "" {
@@ -88,61 +103,48 @@ func UpdateUserFormHandler(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	}
 
 	// Handle POST request to update the user data
-	if r.Method == "POST" {
-		// Get form values
-		email := r.FormValue("stuemail")
-		username := r.FormValue("uname")
-		password := r.FormValue("password")
-		fname := r.FormValue("fname")
-		mname := r.FormValue("mname")
-		lname := r.FormValue("lname")
-		class := r.FormValue("class")
-		gender := r.FormValue("gender")
-		dob := r.FormValue("dob")
-		adm := r.FormValue("stuid")
-		faname := r.FormValue("faname")
-		maname := r.FormValue("maname")
-		connum := r.FormValue("connum")
-		altconnum := r.FormValue("altconnum")
-		address := r.FormValue("address")
+if r.Method == "POST" {
+    // Get form values
+    email := r.FormValue("stuemail")
+    username := r.FormValue("uname")
+    password := r.FormValue("password")
+    fname := r.FormValue("fname")
+    mname := r.FormValue("mname")
+    lname := r.FormValue("lname")
+    class := r.FormValue("class")
+    gender := r.FormValue("gender")
+    dob := r.FormValue("dob")
+    adm := r.FormValue("stuid")
+    faname := r.FormValue("faname")
+    maname := r.FormValue("maname")
+    connum := r.FormValue("connum")
+    altconnum := r.FormValue("altconnum")
+    address := r.FormValue("address")
 
-		// Validate required fields
-		if email == "" || username == "" || fname == "" || lname == "" || class == "" {
-			http.Error(w, "All required fields must be filled", http.StatusBadRequest)
-			return
-		}
+    // Validate required fields
+    if email == "" || username == "" || fname == "" || lname == "" || class == "" {
+        http.Error(w, "All required fields must be filled", http.StatusBadRequest)
+        return
+    }
 
-		// Hash password if provided
-		var hashedPassword []byte
-		if password != "" {
-			var err error
-			hashedPassword, err = bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-			if err != nil {
-				log.Printf("Error hashing password: %v", err)
-				http.Error(w, "Error processing password", http.StatusInternalServerError)
-				return
-			}
-		}
+    // Update user details in the database (use plain password)
+    _, err := db.Exec(
+        "UPDATE registration SET fname=?, mname=?, lname=?, gender=?, faname=?, maname=?, class=?, phone=?, phone1=?, address=?, email=?, username=?, password=?, dob=? WHERE adm=?",
+        fname, mname, lname, gender, faname, maname, class, connum, altconnum, address, email, username, password, dob, adm,
+    )
+    if err != nil {
+        log.Printf("Error updating user: %v", err)
+        http.Error(w, "Error updating user details", http.StatusInternalServerError)
+        return
+    }
 
-		// Use the hashed password or the existing password
-		updatePassword := hashedPassword
-		if password == "" {
-			// Use the current password if no new one is provided
-			updatePassword = nil
-		}
+    // Redirect after successful update
+    http.Redirect(w, r, "/managestudent?success=1", http.StatusSeeOther)
+}
 
-		// Update user details in the database
-		_, err := db.Exec(
-			"UPDATE registration SET fname=?, mname=?, lname=?, gender=?, faname=?, maname=?, class=?, phone=?, phone1=?, address=?, email=?, username=?, password=?, dob=? WHERE adm=?",
-			fname, mname, lname, gender, faname, maname, class, connum, altconnum, address, email, username, updatePassword, dob, adm,
-		)
-		if err != nil {
-			log.Printf("Error updating user: %v", err)
-			http.Error(w, "Error updating user details", http.StatusInternalServerError)
-			return
-		}
-
-		// Redirect after successful update
-		http.Redirect(w, r, "/managestudent?success=1", http.StatusSeeOther)
+}else {
+		// If role is not recognized, redirect to login
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
+//C:\Users\SIMON\Downloads\nginx>nginx.exe start nginx
 }

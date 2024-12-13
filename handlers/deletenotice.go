@@ -9,10 +9,21 @@ import (
 // DeleteNotice deletes a public notice by its ID
 func DeleteNotice(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Get the notice ID from the URL query string
-		delID := r.URL.Query().Get("delid")
+roleCookie, err := r.Cookie("role")
+	if err != nil {
+		log.Printf("Error getting role cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	
+	role := roleCookie.Value
+	//userID := r.URL.Query().Get("userID")
+	// If role is "admin", show the dashboard
+	if role == "admin" {
+		// Get the ID from the query parameter
+		delID := r.URL.Query().Get("delID")
 		if delID == "" {
-			http.Error(w, "Missing notice ID", http.StatusBadRequest)
+			http.Error(w, "Missing ID parameter", http.StatusBadRequest)
 			return
 		}
 
@@ -26,5 +37,9 @@ func DeleteNotice(db *sql.DB) http.HandlerFunc {
 
 		// Redirect to the manage public notice page after deletion
 		http.Redirect(w, r, "/manage-public-notice", http.StatusSeeOther)
+	} else {
+		// If role is not recognized, redirect to login
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
+}
 }

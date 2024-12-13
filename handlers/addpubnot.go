@@ -5,9 +5,21 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+
 )
 
 func AddPubNot(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+	roleCookie, err := r.Cookie("role")
+	if err != nil {
+		log.Printf("Error getting role cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	
+	role := roleCookie.Value
+	//userID := r.URL.Query().Get("userID")
+	// If role is "admin", show the dashboard
+	if role == "admin" {
 	if r.Method == http.MethodPost {
 		// Parse the form data
 		if err := r.ParseForm(); err != nil {
@@ -63,4 +75,9 @@ func AddPubNot(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		log.Printf("Error executing template: %v", err)
 		return
 	}
+} else {
+		// If role is not recognized, redirect to login
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+	}
+
 }

@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+
 )
 
 type STU struct {
@@ -33,6 +34,17 @@ func add1(i int) int {
 	return i + 1
 }
 func searchStudentHandler(w http.ResponseWriter, r *http.Request) {
+	roleCookie, err := r.Cookie("role")
+	if err != nil {
+		log.Printf("Error getting role cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	
+	role := roleCookie.Value
+	//userID := r.URL.Query().Get("userID")
+	// If role is "admin", show the dashboard
+	if role == "admin" {
 	funcMap := template.FuncMap{
 		"add1": add1, // Register the add1 function
 	}
@@ -112,5 +124,9 @@ func searchStudentHandler(w http.ResponseWriter, r *http.Request) {
 			log.Printf("Error executing template: %v", err)
 			return
 		}
+	}
+}else {
+		// If role is not recognized, redirect to login
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
 }

@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	
 )
 
 type Student struct {
@@ -42,8 +43,11 @@ type Class struct {
 	Fee   float64
 }
 
+
+
 func GetClassDetails(db *sql.DB, class string) (float64, float64, float64, float64, error) {
 	// Query to fetch details
+
 	query := `SELECT t1, t2, t3, fee FROM classes WHERE class = ?`
 	var t1, t2, t3, fee float64
 
@@ -59,6 +63,17 @@ func GetClassDetails(db *sql.DB, class string) (float64, float64, float64, float
 	return t1, t2, t3, fee, nil
 }
 func Addstudent(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+roleCookie, err := r.Cookie("role")
+	if err != nil {
+		log.Printf("Error getting role cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	
+	role := roleCookie.Value
+	//userID := r.URL.Query().Get("userID")
+	// If role is "admin", show the dashboard
+	if role == "admin" {
 	tmpl, err := template.ParseFiles(
 		"templates/addstudent.html",
 		"includes/header.html",
@@ -159,7 +174,8 @@ func Addstudent(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 			http.Error(w, "Error inserting student: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
-
+		message := "Hi parent, " + student.FirstName + " has been registered in " + student.Class + " with admission number " + student.AdmissionNumber + ". You will use the username '" + student.UserName + "' and password '" + student.Password + "' to log in to the student portal to access fee statements: https://schools.infinitytechafrica.com/login"
+ SendSms(student.ContactNumber, message)
 		log.Printf("Student %s successfully added to the database", student.FirstName)
 		http.Redirect(w, r, "/addstudent", http.StatusSeeOther)
 		return
@@ -173,8 +189,11 @@ func Addstudent(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	if err := tmpl.Execute(w, data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+} else {
+		// If role is not recognized, redirect to login
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+	}
 }
-
 // Helper function to hash a password
 func hashPassword(password string) string {
 	// Add your hashing logic here (e.g., bcrypt)

@@ -2,25 +2,37 @@ package handlers
 
 import (
 	"database/sql"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
+	"time"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
+var (
+	// Set the session cookie name and expiration
+	sessionCookieName = "user_id"
+	sessionDuration   = 30 * time.Minute
+)
+
+// API structure
 type API struct {
 	Name  string
 	Icon  string
 	IName string
 }
 
+// LoginData structure for rendering the login page
 type LoginData struct {
 	Name     string
 	Icon     string
 	Username string
 	Password string
-	Remember bool
 }
 
+// Get API details from the database
 func getAPIDetails(db *sql.DB) (API, error) {
 	var api API
 	query := "SELECT name, icon, iname FROM api LIMIT 1"
@@ -33,13 +45,13 @@ func getAPIDetails(db *sql.DB) (API, error) {
 	return api, nil
 }
 
-func renderLoginPage(w http.ResponseWriter, api API) {
+// Render the login page
+func renderLoginPage(w http.ResponseWriter, api API, username string) {
 	loginData := LoginData{
 		Name:     api.Name,
 		Icon:     api.Icon,
-		Username: "",
+		Username: username,
 		Password: "",
-		Remember: false,
 	}
 
 	tmpl, err := template.ParseFiles("templates/index.html")
@@ -51,57 +63,100 @@ func renderLoginPage(w http.ResponseWriter, api API) {
 	tmpl.Execute(w, loginData)
 }
 
+// HandleLogin handles login requests
 func HandleLogin(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	if r.Method == "POST" {
 		r.ParseForm()
 		username := r.FormValue("username")
 		password := r.FormValue("password")
-		remember := r.FormValue("remember") == "on"
 
 		var userID int
 		var foundInAdmin bool
-		var adm, phone string
+		var adm, phone, role,form string
+		var fee float64
 
-		queryAdmin := "SELECT ID, UserName FROM tbladmin WHERE UserName = ? AND Password = ?"
-		err := db.QueryRow(queryAdmin, username, password).Scan(&userID, &username)
-		if err == nil {
+		// Authenticate user in tbladmin
+		queryAdmin := "SELECT ID, UserName, Password FROM tbladmin WHERE UserName = ?"
+		var storedPassword string
+		err := db.QueryRow(queryAdmin, username).Scan(&userID, &username, &storedPassword)
+		if err == nil && password == storedPassword { // Plain text password comparison
 			foundInAdmin = true
+			role = "admin"
 		} else {
-			queryRegistration := "SELECT id, adm, username, phone, password FROM registration WHERE username = ? AND password = ?"
-			err = db.QueryRow(queryRegistration, username, password).Scan(&userID, &adm, &username, &phone, &password)
-			if err != nil {
-				http.Error(w, "Invalid login credentials", http.StatusUnauthorized)
+			// Authenticate user in registration table
+			queryRegistration := "SELECT id, adm, username, phone, password, fee,class  FROM registration WHERE username = ?"
+			err = db.QueryRow(queryRegistration, username).Scan(&userID, &adm, &username, &phone, &storedPassword, &fee,&form)
+			if err != nil || password != storedPassword { // Plain text password comparison
+				http.Redirect(w, r, "/login", http.StatusSeeOther)
 				return
 			}
+			role = "user"
+			log.Printf("User ID: %d, Adm: %s, Username: %s, Phone: %s, Fee: %f", userID, adm, username, phone, fee)
 		}
 
-		session, _ := store.Get(r, "store")
-		if foundInAdmin {
-			session.Values["sturecmsaid"] = userID
-			session.Values["username"] = username
-		} else {
-			session.Values["sturecmsaid"] = userID
-			session.Values["adm"] = adm
-			session.Values["username"] = username
-			session.Values["phone"] = phone
-			session.Values["password"] = password
-		}
+		// Set cookies for user details
+		http.SetCookie(w, &http.Cookie{
+			Name:     "role",
+			Value:    role,
+			Expires:  time.Now().Add(sessionDuration),
+			HttpOnly: true,
+		})
+		http.SetCookie(w, &http.Cookie{
+			Name:     "form",
+			Value:    form,
+			Expires:  time.Now().Add(sessionDuration),
+			HttpOnly: true,
+		})
+		http.SetCookie(w, &http.Cookie{
+			Name:     "userID",
+			Value:    fmt.Sprintf("%d", userID),
+			Expires:  time.Now().Add(sessionDuration),
+			HttpOnly: true,
+		})
+		http.SetCookie(w, &http.Cookie{
+			Name:     "adm",
+			Value:    adm,
+			Expires:  time.Now().Add(sessionDuration),
+			HttpOnly: true,
+		})
+		http.SetCookie(w, &http.Cookie{
+			Name:     "username",
+			Value:    username,
+			Expires:  time.Now().Add(sessionDuration),
+			HttpOnly: true,
+		})
+		http.SetCookie(w, &http.Cookie{
+			Name:     "phone",
+			Value:    phone,
+			Expires:  time.Now().Add(sessionDuration),
+			HttpOnly: true,
+		})
+		http.SetCookie(w, &http.Cookie{
+			Name:     "fee",
+			Value:    fmt.Sprintf("%f", fee),
+			Expires:  time.Now().Add(sessionDuration),
+			HttpOnly: true,
+		})
 
-		session.Save(r, w)
+http.SetCookie(w, &http.Cookie{
+    Name:     "Password",
+    Value:    storedPassword, // Set the value directly
+    Expires:  time.Now().Add(sessionDuration),
+    HttpOnly: true,
+})
 
-		http.SetCookie(w, &http.Cookie{Name: "user_login", Value: username, Path: "/", MaxAge: 86400})
-		if remember {
-			http.SetCookie(w, &http.Cookie{Name: "userpassword", Value: password, Path: "/", MaxAge: 86400})
-		}
-
+		// Redirect based on role
 		if foundInAdmin {
 			http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
-		} else {
+			return
+		} else if role == "user" {
 			http.Redirect(w, r, "/parent", http.StatusSeeOther)
+			return
 		}
 		return
 	}
 
+	// Render the login page for GET requests
 	api, _ := getAPIDetails(db)
-	renderLoginPage(w, api)
+	renderLoginPage(w, api, "")
 }

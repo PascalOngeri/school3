@@ -5,18 +5,31 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+
 )
 
 // Notice represents a public notice with a title and message
 type Notice struct {
 	Title   string
 	Message string
+	Date    string
 	ID      interface{}
 }
 
 // ManagePubNot handles public notices by fetching them from the database
 func ManagePubNot(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		roleCookie, err := r.Cookie("role")
+	if err != nil {
+		log.Printf("Error getting role cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	
+	role := roleCookie.Value
+	//userID := r.URL.Query().Get("userID")
+	// If role is "admin", show the dashboard
+	if role == "admin" {
 		// Query to fetch public notices
 		query := "SELECT ID, NoticeTitle, NoticeMessage FROM tblpublicnotice"
 		rows, err := db.Query(query)
@@ -69,5 +82,9 @@ func ManagePubNot(db *sql.DB) http.HandlerFunc {
 			log.Printf("Template execution failed: %v", err)
 			http.Error(w, "Failed to render the page.", http.StatusInternalServerError)
 		}
+	}else {
+		// If role is not recognized, redirect to login
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
+}
 }

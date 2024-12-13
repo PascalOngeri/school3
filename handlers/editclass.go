@@ -12,8 +12,25 @@ import (
 // EditClass handler for editing class details
 func EditClass(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Get the ID from the query string
+roleCookie, err := r.Cookie("role")
+	if err != nil {
+		log.Printf("Error getting role cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	
+	role := roleCookie.Value
+	//userID := r.URL.Query().Get("userID")
+	// If role is "admin", show the dashboard
+	if role == "admin" {
+		// Get the edit ID from the URL
 		editID := r.URL.Query().Get("editid")
+		if editID == "" {
+			http.Error(w, "Missing edit ID parameter", http.StatusBadRequest)
+			return
+		}
+
+		// Define the class variable
 		var class Class
 
 		// Fetch class details from the database
@@ -45,5 +62,9 @@ func EditClass(db *sql.DB) http.HandlerFunc {
 			log.Printf("Template execution failed: %v", err)
 			http.Error(w, "Failed to render the page.", http.StatusInternalServerError)
 		}
+	}else {
+		// If role is not recognized, redirect to login
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
+}
 }

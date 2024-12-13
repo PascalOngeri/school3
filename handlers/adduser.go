@@ -7,12 +7,30 @@ import (
 	"net/http"
 
 	"golang.org/x/crypto/bcrypt"
+	
 )
+
+// GetClassDetails retrieves t1, t2, t3, and fee for a specific class from the classes table
 
 // ManageUser handles adding and deleting users
 func ManageUser(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		
+roleCookie, err := r.Cookie("role")
+	if err != nil {
+		log.Printf("Error getting role cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	
+	role := roleCookie.Value
+	//userID := r.URL.Query().Get("userID")
+	// If role is "admin", show the dashboard
+	if role == "admin" {
+		// Check if user is logged in
+	
 		if r.Method == http.MethodPost {
+
 			if err := r.ParseForm(); err != nil {
 				http.Error(w, "Unable to parse form: "+err.Error(), http.StatusBadRequest)
 				log.Printf("Form parsing error: %v", err)
@@ -42,10 +60,10 @@ func ManageUser(db *sql.DB) http.HandlerFunc {
 					log.Printf("Password hashing error: %v", err)
 					return
 				}
-
+ log.Printf("Authenticated user: %s",  hashedPassword)
 				// Insert data into the database
-				query := `INSERT INTO tblAdmin (AdminName, Email, UserName, Password, MobileNumber) VALUES (?, ?, ?, ?, ?)`
-				_, err = db.Exec(query, AName, email, username, hashedPassword, mobno)
+				query := `INSERT INTO tbladmin (AdminName, Email, UserName, Password, MobileNumber) VALUES (?, ?, ?, ?, ?)`
+				_, err = db.Exec(query, AName, email, username, pass, mobno)
 				if err != nil {
 					log.Printf("Database insertion error: %v", err)
 					http.Error(w, "Failed to add user: "+err.Error(), http.StatusInternalServerError)
@@ -57,7 +75,7 @@ func ManageUser(db *sql.DB) http.HandlerFunc {
 				return
 			}
 
-			if action == "Delete By username" {
+			if action == "Delete" {
 				// Delete user logic
 				username := r.FormValue("username")
 
@@ -106,5 +124,9 @@ func ManageUser(db *sql.DB) http.HandlerFunc {
 			http.Error(w, "Failed to render the page.", http.StatusInternalServerError)
 			log.Printf("Template execution error: %v", err)
 		}
+	} else {
+		// If role is not recognized, redirect to login
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
+}
 }

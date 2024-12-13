@@ -5,10 +5,22 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	
 )
 
 func Manageclass(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	// Fetch data from the database
+roleCookie, err := r.Cookie("role")
+	if err != nil {
+		log.Printf("Error getting role cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	
+	role := roleCookie.Value
+	//userID := r.URL.Query().Get("userID")
+	// If role is "admin", show the dashboard
+	if role == "admin" {
 	users := []User{}
 	rows, err := db.Query("SELECT id, class, t1, t2, t3, fee FROM classes")
 	if err != nil {
@@ -53,5 +65,9 @@ func Manageclass(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		http.Error(w, "Template execution failed: "+err.Error(), http.StatusInternalServerError)
 		log.Printf("Error executing template: %v\n", err) // Debug log
 		return
+	}
+}else {
+		// If role is not recognized, redirect to login
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
 }

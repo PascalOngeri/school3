@@ -3,44 +3,55 @@ package handlers
 import (
 	"html/template"
 	"net/http"
-
-	"github.com/gorilla/sessions" // Ensure this is installed via go get
+	"log"
+	
 )
-
-// Global session store
-var store = sessions.NewCookieStore([]byte("your-secret-key"))
 
 // Dashboard handles the /dashboard route
 func Dashboard(w http.ResponseWriter, r *http.Request) {
-	// Retrieve the session
-	// session, _ := store.Get(r, "store")
-	// if session.Values["sturecmsaid"] == nil {
-	// 	http.Redirect(w, r, "/login", http.StatusSeeOther)
-	// 	return
-	// }
-
-	// Parse templates
-	tmpl, err := template.ParseFiles(
-		"templates/dashboard.html",
-		"includes/footer.html",
-		"includes/header.html",
-		"includes/sidebar.html",
-	)
+	// Read the role from the cookie
+	roleCookie, err := r.Cookie("role")
+	
 	if err != nil {
-		// Handle the error properly
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Printf("Error getting role cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
 
-	// Data to pass to the template
-	data := map[string]interface{}{
-		"Title": "Manage Class", // Example dynamic data
-	}
+	role := roleCookie.Value
 
-	// Execute the template and write to the response
-	err = tmpl.Execute(w, data)
-	if err != nil {
-		// Handle the error properly
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	//userID := r.URL.Query().Get("userID")
+	// If role is "admin", show the dashboard
+	if role == "admin" {
+		// Parse templates
+		tmpl, err := template.ParseFiles(
+			"templates/dashboard.html",
+			"includes/footer.html",
+			"includes/header.html",
+			"includes/sidebar.html",
+		)
+		if err != nil {
+			// Handle the error properly
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Data to pass to the template
+		data := map[string]interface{}{
+			"Title": "Admin Dashboard", // Admin-specific title
+		}
+
+		// Execute the template and write to the response
+		err = tmpl.Execute(w, data)
+		if err != nil {
+			// Handle the error properly
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	} else if role == "user" {
+		// If the role is "user", redirect to the parent section
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+	} else {
+		// If role is not recognized, redirect to login
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
 }

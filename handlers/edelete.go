@@ -2,10 +2,23 @@ package handlers
 
 import (
 	"html/template"
+"log"
 	"net/http"
+	
 )
 
 func edelete(w http.ResponseWriter, r *http.Request) {
+roleCookie, err := r.Cookie("role")
+	if err != nil {
+		log.Printf("Error getting role cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	
+	role := roleCookie.Value
+	//userID := r.URL.Query().Get("userID")
+	// If role is "admin", show the dashboard
+	if role == "admin" {
 	// Parse the template files
 	tmpl, err := template.ParseFiles("templates/edelete.html", "includes/footer.html", "includes/header.html", "includes/sidebar.html")
 	if err != nil {
@@ -25,4 +38,6 @@ func edelete(w http.ResponseWriter, r *http.Request) {
 		// Handle the error properly
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
 }

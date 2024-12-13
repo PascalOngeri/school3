@@ -5,10 +5,22 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	
 )
 
 func Logs(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		roleCookie, err := r.Cookie("role")
+	if err != nil {
+		log.Printf("Error getting role cookie: %v", err)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	
+	role := roleCookie.Value
+	//userID := r.URL.Query().Get("userID")
+	// If role is "admin", show the dashboard
+	if role == "admin" {
 		rows, err := db.Query("SELECT id, date, user, activities FROM logs")
 		if err != nil {
 			http.Error(w, "Database query failed: "+err.Error(), http.StatusInternalServerError)
@@ -56,5 +68,9 @@ func Logs(db *sql.DB) http.HandlerFunc {
 			log.Printf("Error executing template: %v\n", err)
 			return
 		}
+	}else {
+		// If role is not recognized, redirect to login
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 	}
+}
 }

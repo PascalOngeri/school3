@@ -49,7 +49,7 @@
                   <div class="card">
                     <div class="card-body">
                      
-                      <form  method="POST" action="payphp.php" >
+                   <form action="/genz" method="POST">
                         
                        
                          <center><h1 style="text-decoration: line-below; color: black">Generate Fee structure</h1></center>  
@@ -58,17 +58,21 @@
               
             
               <div class="col-lg-4">
+                <form method="POST" action="/generete">
               <select class="form-control" name="genclass"  >
           <option VALUE=""> SELECT CLASS </option>
-          
-          
-          
+          {{range .Classes}}
+          <option value="{{.Name}}">{{.Name}}</option>
+      {{end}}
          </select>
               </div>  
+              <br>
+              <br>
               <div class="form-group">
      
               <button class="btn btn-primary" name="generatefee" > GENERATE FEE STRUCTURE</button>
           <br>
+        </form>
           <br>
                       <center>  <h3 style="text-decoration: line-below; color: black">Recently paid fee</h3></center>
   
@@ -85,30 +89,36 @@
                                                   <th>Action</th>
                                               </tr>
                                           </thead>
-                                          <tbody>
-                                             
-                                              <tr class="odd gradeX">
-                                                  <td></td>
-                                                  <td></td>
-                                                  <td></td>
-                                                  <td></td>
-                                                  <td></td>
-                                                 
-                                                  <td width="100">
-                                                     
-                                                      &nbsp;&nbsp;
-                                                      <a href="payfee.php?del=" class="btn btn-danger btn-xs" onclick="return confirm('Do you really want to delete?');">Delete</a>
-                                                  </td>
-                                              </tr>
-                                              <?php 
-                                                  $sn++;
-                                             } 
-  
-                                         
-  
-                                              ?>    
-                                          </tbody>
+                                       <tbody>
+    {{ range $index, $payment := .Payments }}
+    <tr>
+        <td>{{ $index }}</td>
+        <td>{{ $payment.Adm }}</td>
+        <td>{{ $payment.Date }}</td>
+        <td>{{ printf "%.2f" $payment.Amount }}</td>
+        <td>{{ printf "%.2f" $payment.Balance }}</td>
+        <td>
+            <a href="/dashboard?id={{ $payment.ID }}" class="btn btn-danger btn-xs"
+               onclick="return confirm('Do you really want to delete?');">Delete</a>
+        </td>
+    </tr>
+    {{ else }}
+    <tr>
+        <td colspan="6" class="text-center">No recent payments found.</td>
+    </tr>
+    {{ end }}
+    
+    <!-- Last row for Totals -->
+    <tr>
+        <td colspan="3" class="text-right"><strong>Total:</strong></td>
+        <td>{{ printf "%.2f" (index .Payments 0).Tot }}</td>
+        <td>{{ printf "%.2f" (index .Payments 0).Balo }}</td>
+        <td></td> <!-- Empty cell for the last column -->
+    </tr>
+</tbody>
+
                                       </table>
+
                     </div>
                   </div>
                 </div>
